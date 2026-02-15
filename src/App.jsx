@@ -1,38 +1,39 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Mail, MapPin, ChevronRight, ChevronLeft, Github, Linkedin, Terminal, Map, Database, Code2, Globe, Layout, Cpu, ArrowUpRight, GraduationCap, Play, Layers, Server, ArrowRight } from 'lucide-react';
+import { Mail, MapPin, ChevronRight, ChevronLeft, Github, Linkedin, Terminal, Map, Database, Code2, Globe, Layout, Cpu, ArrowUpRight, GraduationCap, Play, Layers, Server, ArrowRight, MousePointerClick } from 'lucide-react';
 
 /**
- * Luyao Zhang's Portfolio - FINAL VISUAL UPGRADE
+ * Luyao Zhang's Portfolio - FINAL REVISION
  * Theme: CDE Application
- * Updates based on user feedback:
- * 1. Preserved User's edits: Menu (Research->Timeline->Stack), Cover (bromo.jpg), Year (2026).
- * 2. Visuals:
- * - Added background color block for Stack section.
- * - Increased project image size (col-8).
- * - Added dividers between projects and in stack section.
- * - Removed mouse listener from Stack cards (simplified).
- * - Optimized Footer text size and brightness.
- * - Added subtle gradient background.
+ * Updates:
+ * 1. Cover Page: Full-screen text overlay with "Click to Enter" hint.
+ * 2. Project 1: Role adjusted to "Implementation", scope expanded (drilling, mapping, parameters).
+ * 3. Project 3:
+ * - Layout: Strictly enforced 8:4 ratio (Image 8 / Text 4).
+ * - Content: Single image (no zoom), description fixed (Aftershock focus, removed Beijing).
+ * 4. Academic: Updated "Data Structures" to "Emergency Info Mgmt & Platform Implementation".
  */
 
 // --- Assets Configuration ---
 const ASSETS = {
-  // User specified: bromo.jpg
+  // Cover Image
   cover: "https://raw.githubusercontent.com/luyao121401-coder/image-store/main/work1/bromo.jpg",
 
+  // Project 1: Xinjiang (YouTube)
   project1: [
     { type: 'youtube', id: "MPdzTuXMIe0" }
   ],
+
+  // Project 2: Field Work System (Video + 3 Images)
   project2: [
     { type: 'video', src: "https://raw.githubusercontent.com/luyao121401-coder/image-store/main/work1/work1_video.mp4" },
     { type: 'image', src: "https://raw.githubusercontent.com/luyao121401-coder/image-store/main/work1/login.jpg" },
     { type: 'image', src: "https://raw.githubusercontent.com/luyao121401-coder/image-store/main/work1/任务统计.jpg" },
     { type: 'image', src: "https://raw.githubusercontent.com/luyao121401-coder/image-store/main/work1/数据管理.jpg" }
   ],
+
+  // Project 3: ETAS (Single Image - Prediction Result)
   project3: [
-    { type: 'image', src: "https://images.unsplash.com/photo-1551288049-bbbda536639a?q=80&w=1200" },
-    { type: 'image', src: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200" },
-    { type: 'image', src: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200" }
+    { type: 'image', src: "https://raw.githubusercontent.com/luyao121401-coder/image-store/main/aftershock/prediction_result.jpg" }
   ]
 };
 
@@ -66,35 +67,47 @@ const CustomCursor = () => {
   );
 };
 
+// --- Updated Cover Page (Text Overlay Layout) ---
 const CoverPage = ({ onEnter }) => {
   return (
-    <div className="fixed inset-0 z-[100] bg-zinc-900 text-white flex flex-col md:flex-row overflow-hidden">
-      <div className="w-full md:w-1/2 p-12 md:p-24 flex flex-col justify-center bg-zinc-900 relative">
-        {/* Subtle texture for cover */}
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_0%_0%,rgba(16,185,129,0.1),transparent_40%)]"></div>
-
-        <div className="max-w-xl relative z-10">
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6 leading-tight">Hello,<br/> I'm Luyao.</h1>
-          <div className="h-1 w-20 bg-emerald-500 mb-8"></div>
-          <div className="space-y-6 text-zinc-400 text-xl leading-relaxed font-light">
-            <p>I’m <span className="text-white font-medium">Luyao Zhang</span>, a WebGIS Frontend Developer and an explorer at heart. I love exploring everything about location and space, and I have the passion and skills to turn the unknown into clear, useful knowledge.</p>
-            <p>My goal is to break down the barriers between people and spatiotemporal data, speed up response in emergency and disaster situations, and create more intuitive, powerful visualization tools to make the Digital Earth more accessible and inclusive for everyone.</p>
-          </div>
-          <div className="mt-12 flex items-center gap-4 text-sm font-bold tracking-widest uppercase text-emerald-500 animate-pulse md:hidden">Tap Image to Enter <ArrowRight size={16} /></div>
-        </div>
-      </div>
-      <div className="w-full md:w-1/2 relative group cursor-pointer interactive overflow-hidden" onClick={onEnter}>
-        <div className="absolute inset-0 bg-emerald-900/10 group-hover:bg-transparent transition-colors duration-700 z-10 mix-blend-overlay"></div>
+    <div
+      className="fixed inset-0 z-[100] bg-zinc-900 text-white flex flex-col items-center justify-center cursor-pointer group overflow-hidden"
+      onClick={onEnter}
+    >
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
         <img
           src={ASSETS.cover}
           alt="Cover"
-          className="w-full h-full object-cover transition-transform duration-[2s] ease-out group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-[3s] ease-out group-hover:scale-105"
           onError={(e) => { e.target.style.display='none'; e.target.parentElement.style.backgroundColor='#18181b'; }}
         />
-        <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/20 backdrop-blur-[2px]">
-          <div className="bg-white/10 backdrop-blur-md border border-white/20 px-8 py-4 rounded-full flex items-center gap-4 text-white font-bold tracking-widest uppercase transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-            Enter Portfolio <ArrowRight size={18} />
-          </div>
+        {/* Dark Overlay for Text Readability */}
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
+      </div>
+
+      {/* Centered Content */}
+      <div className="relative z-10 max-w-4xl px-8 text-center flex flex-col items-center">
+        <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-8 leading-tight drop-shadow-xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          Hello,<br/> I'm Luyao.
+        </h1>
+        <div className="h-1.5 w-24 bg-emerald-500 mb-12 rounded-full shadow-lg shadow-emerald-500/50"></div>
+
+        <div className="space-y-6 text-zinc-200 text-xl md:text-2xl leading-relaxed font-light drop-shadow-md max-w-3xl animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-200">
+          <p>
+            I’m <span className="text-white font-medium">Luyao Zhang</span>, a WebGIS Frontend Developer and an explorer at heart. I love exploring everything about location and space, and I have the passion and skills to turn the unknown into clear, useful knowledge.
+          </p>
+          <p>
+            My goal is to break down the barriers between people and spatiotemporal data, speed up response in emergency and disaster situations, and create more intuitive, powerful visualization tools to make the Digital Earth more accessible and inclusive for everyone.
+          </p>
+        </div>
+      </div>
+
+      {/* Click Hint */}
+      <div className="absolute bottom-16 z-20 flex flex-col items-center animate-bounce">
+        <span className="text-xs font-bold tracking-[0.3em] uppercase text-emerald-400 mb-3 drop-shadow-sm">Click Anywhere to Enter</span>
+        <div className="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center bg-white/10 backdrop-blur-sm group-hover:bg-emerald-500 group-hover:border-emerald-500 transition-all duration-300">
+          <MousePointerClick size={20} className="text-white" />
         </div>
       </div>
     </div>
@@ -128,14 +141,13 @@ const ProjectSlider = ({ slides, title }) => {
               />
             )}
             {slide.type === 'image' && (
-              <>
-                <img
-                  src={slide.src}
-                  alt={title}
-                  className="w-full h-full object-cover transition-all duration-1000 scale-110 group-hover:scale-100"
-                  onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1518186239717-319049a9ec60?q=80&w=1200"; }}
-                />
-              </>
+              <img
+                src={slide.src}
+                alt={title}
+                // REMOVED scaling effect as requested ("不要做放大处理")
+                className="w-full h-full object-cover"
+                onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1518186239717-319049a9ec60?q=80&w=1200"; }}
+              />
             )}
             {slide.type === 'youtube' && (
               <div className="w-full h-full relative">
@@ -171,7 +183,6 @@ const ProjectSlider = ({ slides, title }) => {
   );
 };
 
-// Replaced SpotlightCard with SimpleCard (No mouse hover effect, Clean Design)
 const SimpleCard = ({ children, className = "" }) => {
   return (
     <div className={`p-8 bg-white border border-zinc-200 transition-all duration-300 hover:border-zinc-400 hover:shadow-lg ${className}`}>
@@ -197,19 +208,8 @@ const App = () => {
   return (
     <div className="bg-zinc-50 text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white scroll-smooth cursor-none relative animate-in fade-in duration-1000">
       <CustomCursor />
+      <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#000 0.5px, transparent 0.5px), linear-gradient(90deg, #000 0.5px, transparent 0.5px)', backgroundSize: '40px 40px' }}></div>
 
-      {/* Subtle Background Gradient for Whole Page */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-zinc-50 via-white to-zinc-100 opacity-80"></div>
-         {/* Colorful Orbs for vibe */}
-         <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[100px]"></div>
-         <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px]"></div>
-      </div>
-
-      {/* Navigation - User defined order: Research -> Timeline -> Stack -> Contact */}
-      {/* Wait, user said "改了一下菜单timeline和stack的位置".
-          Uploaded file had: ['Research', 'Timeline', 'Stack', 'Contact']
-          I will keep this order as requested. */}
       <nav className="fixed top-0 w-full z-50 mix-blend-difference py-8 px-8 md:px-12 flex justify-between items-center text-white backdrop-blur-[2px]">
         <div className="text-xl font-bold tracking-[0.2em]">LY.ZHANG</div>
         <div className="hidden md:flex space-x-12 text-[10px] font-bold tracking-[0.3em] uppercase">
@@ -218,7 +218,7 @@ const App = () => {
       </nav>
 
       {/* Hero */}
-      <section className="h-screen flex flex-col justify-center px-8 md:px-24 max-w-[1800px] mx-auto relative overflow-hidden z-10">
+      <section className="h-screen flex flex-col justify-center px-8 md:px-24 max-w-[1920px] mx-auto relative overflow-hidden z-10">
         <div className="reveal opacity-0 translate-y-12 transition-all duration-[1.5s]">
           <span className="text-xs font-bold tracking-[0.4em] text-zinc-500 uppercase block mb-8">— Portfolio 2026</span>
           <h1 className="text-[12vw] md:text-[8vw] font-bold leading-[0.9] tracking-tighter mb-12">GEOSPATIAL DEV <br /><span className="italic font-light text-zinc-400">&</span> RESEARCHER.</h1>
@@ -233,7 +233,7 @@ const App = () => {
         <div className="absolute right-[-5%] top-[20%] text-[25vw] font-bold text-zinc-200/40 select-none -z-10 leading-none tracking-tighter transition-transform duration-100 ease-linear">GIS</div>
       </section>
 
-      {/* Projects - Visual Upgrade: Bigger Images, Less Spacing */}
+      {/* Projects */}
       <section id="research" className="py-20 px-8 md:px-24 max-w-[1920px] mx-auto relative z-10">
         <div className="absolute left-8 md:left-24 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-zinc-200 to-transparent hidden lg:block"></div>
         <div className="flex justify-between items-end mb-20 reveal opacity-0 translate-y-12 pl-0 lg:pl-12">
@@ -241,31 +241,31 @@ const App = () => {
         </div>
 
         <div className="space-y-24">
-          {/* Project 1 - Image 8 cols, Text 4 cols */}
+          {/* Project 1 - Updated Text (Implementation Focus) */}
           <div className="grid lg:grid-cols-12 gap-12 items-center reveal opacity-0 translate-y-12 relative group">
             <div className="absolute left-[-5px] top-[50%] -translate-y-1/2 w-2.5 h-2.5 bg-zinc-900 rounded-full hidden lg:block ring-4 ring-zinc-50"></div>
-            {/* Expanded Media Column */}
             <div className="lg:col-span-8 pl-0 lg:pl-12"><ProjectSlider slides={ASSETS.project1} title="Xinjiang Project" /></div>
             <div className="lg:col-span-4 flex flex-col justify-center">
-              <div className="flex items-center gap-4 mb-6"><span className="text-4xl font-black text-black">01</span><span className="text-[10px] font-bold tracking-[0.2em] uppercase bg-zinc-900 text-white px-2 py-1">WebGIS Engineering</span></div>
+              <div className="flex items-center gap-4 mb-6"><span className="text-4xl font-black text-zinc-300">01</span><span className="text-[10px] font-bold tracking-[0.2em] uppercase bg-zinc-900 text-white px-2 py-1">WebGIS Engineering</span></div>
               <h3 className="text-3xl font-bold mb-6 leading-none italic">Xinjiang Urban Active Fault Detection DB</h3>
-              <p className="text-zinc-500 text-base leading-relaxed mb-8 text-left">Developed a comprehensive WebGIS platform for the Xinjiang region, featuring 7 core business modules including fault detection and risk census. Implemented complex spatial data visualization, report generation, and thematic mapping capabilities.</p>
+              <p className="text-zinc-500 text-base leading-relaxed mb-8 text-left">
+                 Responsible for frontend page architecture and core function implementation, including map interactions. Developing a comprehensive WebGIS platform covering fault detection, risk census, drilling, mapping, and ground motion parameter management.
+              </p>
               <div className="flex flex-wrap gap-2 mb-8">{['OpenLayers', 'GeoServer', 'Vue.js'].map(tag => (<span key={tag} className="text-[10px] border border-zinc-200 px-3 py-1 text-zinc-500">{tag}</span>))}</div>
               <div className="grid grid-cols-2 gap-8 border-t border-zinc-200 pt-6">
                 <div><h4 className="text-[10px] font-bold text-zinc-400 uppercase mb-2 tracking-widest">Type</h4><p className="text-sm font-medium">Enterprise WebGIS</p></div>
-                <div><h4 className="text-[10px] font-bold text-zinc-400 uppercase mb-2 tracking-widest">Role</h4><p className="text-sm font-medium text-zinc-600">Frontend Developer</p></div>
+                <div><h4 className="text-[10px] font-bold text-zinc-400 uppercase mb-2 tracking-widest">Role</h4><p className="text-sm font-medium text-zinc-600">Frontend Implementation</p></div>
               </div>
             </div>
           </div>
 
-          {/* Divider between projects */}
           <div className="w-full h-px bg-zinc-200/60" />
 
           {/* Project 2 */}
           <div className="grid lg:grid-cols-12 gap-12 items-center reveal opacity-0 translate-y-12 relative group">
             <div className="absolute left-[-5px] top-[50%] -translate-y-1/2 w-2.5 h-2.5 bg-zinc-300 rounded-full hidden lg:block ring-4 ring-zinc-50"></div>
             <div className="lg:col-span-4 pl-0 lg:pl-12 order-2 lg:order-1 text-right lg:text-left flex flex-col justify-center">
-              <div className="flex items-center lg:justify-start justify-end gap-4 mb-6"><span className="text-4xl font-black text-black">02</span><span className="text-[10px] font-bold tracking-[0.2em] uppercase bg-zinc-900 text-white px-2 py-1">System Architecture</span></div>
+              <div className="flex items-center lg:justify-start justify-end gap-4 mb-6"><span className="text-4xl font-black text-zinc-300">02</span><span className="text-[10px] font-bold tracking-[0.2em] uppercase bg-zinc-900 text-white px-2 py-1">System Architecture</span></div>
               <h3 className="text-3xl font-bold mb-6 leading-none italic">Field Work Information <br/>Management System</h3>
               <p className="text-zinc-500 text-base leading-relaxed mb-8">Engineered a comprehensive system for drilling project management, statistical analysis, and construction team oversight. Integrated map layers with task statistics and designed RBAC logic to streamline collaborative workflows.</p>
               <div className="flex flex-wrap lg:justify-start justify-end gap-2 mb-8">{['Vue.js', 'RBAC', 'Workflow', 'OpenLayers'].map(tag => (<span key={tag} className="text-[10px] border border-zinc-200 px-3 py-1 text-zinc-500">{tag}</span>))}</div>
@@ -274,41 +274,45 @@ const App = () => {
                 <div><h4 className="text-[10px] font-bold text-zinc-400 uppercase mb-2 tracking-widest">Focus</h4><p className="text-sm font-medium text-zinc-600">Access Control & Workflow</p></div>
               </div>
             </div>
-            {/* Expanded Media Column */}
             <div className="lg:col-span-8 order-1 lg:order-2"><ProjectSlider slides={ASSETS.project2} title="Field Work" /></div>
           </div>
 
-          {/* Divider between projects */}
           <div className="w-full h-px bg-zinc-200/60" />
 
-          {/* Project 3 */}
+          {/* Project 3 - Layout 8:4 ratio (Image:Text) - Updated Description & Single Image */}
           <div className="grid lg:grid-cols-12 gap-12 items-center reveal opacity-0 translate-y-12 relative group">
             <div className="absolute left-[-5px] top-[50%] -translate-y-1/2 w-2.5 h-2.5 bg-zinc-300 rounded-full hidden lg:block ring-4 ring-zinc-50"></div>
-            {/* Expanded Media Column */}
+            {/* Expanded Media Column (8/12) */}
             <div className="lg:col-span-8 pl-0 lg:pl-12"><ProjectSlider slides={ASSETS.project3} title="ETAS System" /></div>
+            {/* Text Column (4/12) */}
             <div className="lg:col-span-4 flex flex-col justify-center">
-              <div className="flex items-center gap-4 mb-6"><span className="text-4xl font-black text-black">03</span><span className="text-[10px] font-bold tracking-[0.2em] uppercase bg-zinc-900 text-white px-2 py-1">Algorithm & Viz</span></div>
+              <div className="flex items-center gap-4 mb-6"><span className="text-4xl font-black text-zinc-300">03</span><span className="text-[10px] font-bold tracking-[0.2em] uppercase bg-zinc-900 text-white px-2 py-1">Algorithm & Viz</span></div>
               <h3 className="text-3xl font-bold mb-6 leading-none italic">ETAS-based Aftershock <br/>Prediction System</h3>
-              <p className="text-zinc-500 text-base leading-relaxed mb-8 text-left">Built a seismic aftershock prediction system based on the ETAS mathematical model. Processed over 8,000 historical seismic records and integrated real-time visualization to analyze earthquake sequences and probabilities.</p>
+              <p className="text-zinc-500 text-base leading-relaxed mb-8 text-left">
+                A seismic aftershock prediction system based on the ETAS model. Focusing on post-earthquake analysis, it visualizes the spatial distribution of potential aftershock probabilities based on historical data.
+              </p>
               <div className="flex flex-wrap gap-2 mb-8">{['Java', 'SpringBoot', 'BMap API', 'SQL'].map(tag => (<span key={tag} className="text-[10px] border border-zinc-200 px-3 py-1 text-zinc-500">{tag}</span>))}</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Timeline - Increased Font Size */}
-      <section id="timeline" className="py-20 px-8 md:px-24 max-w-[1800px] mx-auto relative z-10">
+      {/* Timeline - Updated Academic Text */}
+      <section id="timeline" className="py-20 px-8 md:px-24 max-w-[1920px] mx-auto relative z-10">
         <div className="grid lg:grid-cols-12 gap-16">
           <div className="lg:col-span-4 reveal opacity-0 translate-y-12 transition-all duration-1000"><span className="text-[10px] font-bold tracking-[0.4em] text-zinc-400 block mb-8 uppercase italic">History</span><h2 className="text-5xl font-bold tracking-tighter">Academic & <br/> Professional.</h2></div>
           <div className="lg:col-span-8 space-y-16 reveal opacity-0 translate-y-12 transition-all duration-1000 delay-200">
-            {[{ year: '2023 — 2024', role: 'Front-End Dev Engineer', org: 'GeoQuater / Beijing', type: 'Internship', desc: 'Spearheaded the UI development for 4 seismic monitoring systems. Translated complex geological metrics into intuitive dashboards.' }, { year: '2020 — 2024', role: 'B.Eng. Information Management', org: 'IDP / Hebei', type: 'Education', desc: 'Academic focus on GIS, Data Structures, and Information Systems. Ranking: Top 5% in Major.' }].map((item, index) => (
+            {[
+                { year: '2023 — 2024', role: 'Front-End Dev Engineer', org: 'GeoQuater / Beijing', type: 'Internship', desc: 'Responsible for the front-end development and map functionality implementation for multiple seismic monitoring systems. Translated complex geological metrics into intuitive dashboards.' },
+                { year: '2020 — 2024', role: 'B.Eng. Information Management', org: 'IDP / Hebei', type: 'Education', desc: 'Academic focus on GIS, Emergency Information Management, and Platform Implementation. Developing a deep understanding of disaster prevention technology through a digital lens.' }
+            ].map((item, index) => (
                 <div key={index} className="relative pl-8 border-l border-zinc-200 hover:border-zinc-900 transition-colors duration-500"><div className="absolute left-[-5px] top-0 w-2.5 h-2.5 bg-zinc-900 rounded-full ring-4 ring-white"></div><div className="text-xs font-bold tracking-[0.2em] text-zinc-400 mb-2 uppercase">{item.year}</div><div className="flex flex-col sm:flex-row sm:items-baseline gap-2 mb-4"><h3 className="text-2xl font-bold italic">{item.role}</h3><span className="text-sm font-medium text-zinc-500">@ {item.org}</span><span className="text-[10px] font-bold uppercase border border-zinc-200 px-2 py-0.5 rounded-full ml-auto text-zinc-400">{item.type}</span></div><p className="text-zinc-500 text-xl leading-relaxed max-w-2xl">{item.desc}</p></div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Stack - ADDED COLOR BLOCK BACKGROUND & DIVIDER */}
+      {/* Stack */}
       <section id="stack" className="py-20 bg-zinc-100 px-8 md:px-24 relative z-10 border-y border-zinc-200">
         <div className="max-w-[1800px] mx-auto grid md:grid-cols-2 gap-16 items-start relative">
             <div className="reveal opacity-0 translate-y-12 sticky top-32">
@@ -317,7 +321,6 @@ const App = () => {
               <p className="text-zinc-500 text-xl max-w-md leading-relaxed mb-8">My background focuses on front-end engineering and geospatial technologies, enabling me to build intuitive tools for Digital Earth applications.</p>
             </div>
 
-            {/* Vertical Divider for Desktop */}
             <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-zinc-300 -translate-x-1/2"></div>
 
             <div className="grid grid-cols-1 gap-6 reveal opacity-0 translate-y-12 delay-300">
@@ -336,10 +339,9 @@ const App = () => {
         </div>
       </section>
 
-      {/* Footer - Reduced Slogan Size & Brighter Color */}
+      {/* Footer */}
       <section id="contact" className="py-40 bg-zinc-900 text-white px-8 relative overflow-hidden z-10 text-center">
         <span className="text-xs font-bold tracking-[0.5em] text-zinc-500 mb-12 block uppercase">Application For Admission</span>
-        {/* Adjusted Font Size (9vw -> 5xl/7xl) and Color (text-zinc-300) */}
         <h2 className="text-5xl md:text-7xl font-bold tracking-tighter leading-none mb-12 uppercase text-zinc-300">UNVEILING COMPLEXITY.<br/> EMPOWERING RESCUE.</h2>
         <p className="text-zinc-400 text-xl font-light mb-24 max-w-3xl mx-auto">Delivering a qualitative leap for emergency services through high-interactivity visualization of complex spatiotemporal data.</p>
         <div className="grid md:grid-cols-3 gap-12 max-w-4xl mx-auto mb-40">
